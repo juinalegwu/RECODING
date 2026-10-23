@@ -1,26 +1,12 @@
 [
-  {
-    "id": "T001",
-    "title": "wifi",
-    "category": "Network",
-    "status": "open"
-  },
-  {
-    "id": "T002",
-    "title": "keyboard",
-    "category": "Hardware",
-    "status": "closed"
-  },
-  {
-    "id": "T003",
-    "title": "poor network",
-    "category": "Network",
-    "status": "in_progress"
-  },
-  {
-    "id": "T004",
-    "title": "mouse",
-    "category": "Hardware",
-    "status": "open"
-  }
+    {
+        "id": "T001",
+        "title": "WiFi problem",
+        "status": "resolved"
+    },
+    {
+        "id": "T002",
+        "title": "Broken keyboard",
+        "status": "in_progress"
+    }
 ]

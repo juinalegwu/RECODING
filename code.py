@@ -20,7 +20,7 @@ def create_ticket():
         try:
             with open(FILE, "r") as f:
                 tickets = json.load(f)
-        except (json.JSONDECODER):
+        except json.JSONDecodeError:
             print("Error reading tickets file.")
             return
         
