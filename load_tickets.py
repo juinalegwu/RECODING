@@ -8,7 +8,7 @@ def find_ticket(tickets, ticket_id):
 
     return None
 
-
+ 
 def show_tickets(tickets):
     if not tickets:
         print("No tickets found.")
@@ -17,8 +17,10 @@ def show_tickets(tickets):
     for ticket in tickets:
         print("ID:", ticket["id"])
         print("Title:", ticket["title"])
+        print("Category:", ticket.get("category", "Not set"))
         print("Status:", ticket["status"])
         print("-------------------")
+ 
 
 
 def update_status(tickets, ticket_id, new_status):
@@ -50,13 +52,19 @@ def update_status(tickets, ticket_id, new_status):
     return False
 
 
-def create_ticket(tickets, title):
+ 
+def create_ticket(tickets, title, category):
     title = title.strip()
+    category = category.strip().title()
+
+    allowed_categories = ["Network", "Hardware", "Software", "Other"]
 
     if not title:
         return None
 
-    # Find the highest existing ticket number.
+    if category not in allowed_categories:
+        return None
+
     highest_number = 0
 
     for ticket in tickets:
@@ -73,12 +81,14 @@ def create_ticket(tickets, title):
     ticket = {
         "id": new_id,
         "title": title,
+        "category": category,
         "status": "open"
     }
 
     tickets.append(ticket)
 
     return ticket
+ 
 
 
 # Load tickets from the JSON file.
@@ -107,6 +117,7 @@ while True:
             print("ID:", result["id"])
             print("Title:", result["title"])
             print("Status:", result["status"])
+            print("Category:", result.get("category", "Not set"))
         else:
             print("Ticket not found.")
 
@@ -135,7 +146,9 @@ while True:
 
     elif choice == "4":
         title = input("Enter ticket title: ").strip()
-        ticket = create_ticket(tickets, title)
+        category = input("Enter category (Network, Hardware, Software, Other): ")
+
+        ticket = create_ticket(tickets, title, category)
 
         if ticket is not None:
             with open("tickets.json", "w") as file:
@@ -144,7 +157,7 @@ while True:
             print("Ticket created successfully!")
             print("Ticket ID:", ticket["id"])
         else:
-            print("Ticket title cannot be empty.")
+            print("Invalid title or category. Please try again.")
 
     elif choice == "5":
         print("Goodbye!")

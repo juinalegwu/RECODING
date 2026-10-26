@@ -13,5 +13,11 @@
         "id": "T003",
         "title": "printer problem",
         "status": "open"
+    },
+    {
+        "id": "T004",
+        "title": "Internet not working",
+        "category": "Network",
+        "status": "open"
     }
 ]
