@@ -35,31 +35,54 @@ with open("tickets.json", "r") as file:
     tickets = json.load(file)
 
 
-show_tickets(tickets)
-
-
-ticket_id = input("Enter ticket ID: ")
-
-result = find_ticket(tickets, ticket_id)
-
  
-if result is not None:
-    print("ID:", result["id"])
-    print("Title:", result["title"])
-    print("Status:", result["status"])
+while True:
+    print("\n===== TICKET SYSTEM =====")
+    print("1. Display all tickets")
+    print("2. Find a ticket")
+    print("3. Update ticket status")
+    print("4. Exit")
 
-    new_status = input("Enter new status: ")
+    choice = input("Choose an option: ")
 
-    updated = update_status(tickets, ticket_id, new_status)
+    if choice == "1":
+        show_tickets(tickets)
 
-    if updated:
-        with open("tickets.json", "w") as file:
-            json.dump(tickets, file, indent=4)
+    elif choice == "2":
+        ticket_id = input("Enter ticket ID: ")
+        result = find_ticket(tickets, ticket_id)
 
-        print("Ticket updated successfully!")
+        if result is not None:
+            print("ID:", result["id"])
+            print("Title:", result["title"])
+            print("Status:", result["status"])
+        else:
+            print("Ticket not found")
+
+    elif choice == "3":
+        ticket_id = input("Enter ticket ID: ")
+        result = find_ticket(tickets, ticket_id)
+
+        if result is not None:
+            print("Current status:", result["status"])
+            new_status = input("Enter new status: ")
+
+            updated = update_status(tickets, ticket_id, new_status)
+
+            if updated:
+                with open("tickets.json", "w") as file:
+                    json.dump(tickets, file, indent=4)
+
+                print("Ticket updated successfully!")
+            else:
+                print("Invalid status. Use open, in_progress, or resolved.")
+        else:
+            print("Ticket not found")
+
+    elif choice == "4":
+        print("Goodbye!")
+        break
+
     else:
-        print("Invalid status. Use open, in_progress, or resolved.")
-
-else:
-    print("Ticket not found")
+        print("Invalid option. Choose 1, 2, 3, or 4.")
  
