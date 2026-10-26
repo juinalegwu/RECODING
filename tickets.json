@@ -2,11 +2,11 @@
     {
         "id": "T001",
         "title": "WiFi problem",
-        "status": "resolved"
+        "status": "open"
     },
     {
         "id": "T002",
         "title": "Broken keyboard",
-        "status": "in_progress"
+        "status": "resolved"
     }
 ]

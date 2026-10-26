@@ -16,20 +16,35 @@ def show_tickets(tickets):
         print("-------------------")
 
 
+ 
 def update_status(tickets, ticket_id, new_status):
     allowed_statuses = ["open", "in_progress", "resolved"]
+    new_status = new_status.strip().lower()
 
     if new_status not in allowed_statuses:
         return False
 
     ticket = find_ticket(tickets, ticket_id)
 
-    if ticket is not None:
+    if ticket is None:
+        return False
+
+    current_status = ticket["status"]
+
+    if current_status == "open" and new_status == "in_progress":
+        ticket["status"] = new_status
+        return True
+
+    elif current_status == "in_progress" and new_status == "resolved":
+        ticket["status"] = new_status
+        return True
+
+    elif current_status == "resolved" and new_status == "open":
         ticket["status"] = new_status
         return True
 
     return False
-
+ 
 
 with open("tickets.json", "r") as file:
     tickets = json.load(file)
@@ -75,7 +90,7 @@ while True:
 
                 print("Ticket updated successfully!")
             else:
-                print("Invalid status. Use open, in_progress, or resolved.")
+                print("Status change not allowed. Check the ticket's current status.")
         else:
             print("Ticket not found")
 
