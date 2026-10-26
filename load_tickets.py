@@ -1,6 +1,5 @@
 import json
 
-
 def find_ticket(tickets, ticket_id):
     for ticket in tickets:
         if ticket["id"] == ticket_id:
@@ -32,22 +31,18 @@ def update_status(tickets, ticket_id, new_status):
     return False
 
 
-# Load tickets from the JSON file
 with open("tickets.json", "r") as file:
     tickets = json.load(file)
 
 
-# Display all tickets
 show_tickets(tickets)
 
 
-# Ask for a ticket ID
 ticket_id = input("Enter ticket ID: ")
 
 result = find_ticket(tickets, ticket_id)
 
-
-# Check whether the ticket exists
+ 
 if result is not None:
     print("ID:", result["id"])
     print("Title:", result["title"])
