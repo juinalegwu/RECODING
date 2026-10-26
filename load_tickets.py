@@ -18,6 +18,7 @@ def show_tickets(tickets):
         print("ID:", ticket["id"])
         print("Title:", ticket["title"])
         print("Category:", ticket.get("category", "Not set"))
+        print("Priority:", ticket.get("priority", "Not set"))
         print("Status:", ticket["status"])
         print("-------------------")
  
@@ -53,16 +54,22 @@ def update_status(tickets, ticket_id, new_status):
 
 
  
-def create_ticket(tickets, title, category):
+ 
+def create_ticket(tickets, title, category, priority):
     title = title.strip()
     category = category.strip().title()
+    priority = priority.strip().lower()
 
     allowed_categories = ["Network", "Hardware", "Software", "Other"]
+    allowed_priorities = ["high", "medium", "low"]
 
     if not title:
         return None
 
     if category not in allowed_categories:
+        return None
+
+    if priority not in allowed_priorities:
         return None
 
     highest_number = 0
@@ -82,12 +89,14 @@ def create_ticket(tickets, title, category):
         "id": new_id,
         "title": title,
         "category": category,
+        "priority": priority,
         "status": "open"
     }
 
     tickets.append(ticket)
 
     return ticket
+ 
  
 
 
@@ -118,6 +127,7 @@ while True:
             print("Title:", result["title"])
             print("Status:", result["status"])
             print("Category:", result.get("category", "Not set"))
+            print("Priority:", result.get("priority", "Not set"))
         else:
             print("Ticket not found.")
 
@@ -145,10 +155,11 @@ while True:
             print("Ticket not found.")
 
     elif choice == "4":
-        title = input("Enter ticket title: ").strip()
+        title = input("Enter ticket title: ")
         category = input("Enter category (Network, Hardware, Software, Other): ")
+        priority = input("Enter priority (high, medium, low): ")
 
-        ticket = create_ticket(tickets, title, category)
+        ticket = create_ticket(tickets, title, category, priority)
 
         if ticket is not None:
             with open("tickets.json", "w") as file:
@@ -157,12 +168,12 @@ while True:
             print("Ticket created successfully!")
             print("Ticket ID:", ticket["id"])
         else:
-            print("Invalid title or category. Please try again.")
-
+            print("Invalid title, category, or priority. Please try again.")
+     
     elif choice == "5":
         print("Goodbye!")
         break
 
     else:
         print("Invalid option. Choose 1, 2, 3, 4, or 5.")
- 
+       

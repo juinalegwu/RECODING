@@ -19,5 +19,12 @@
         "title": "Internet not working",
         "category": "Network",
         "status": "open"
+    },
+    {
+        "id": "T005",
+        "title": "laptop not working",
+        "category": "Hardware",
+        "priority": "high",
+        "status": "open"
     }
 ]
