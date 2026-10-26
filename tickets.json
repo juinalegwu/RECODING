@@ -26,5 +26,39 @@
         "category": "Hardware",
         "priority": "high",
         "status": "open"
+    },
+    {
+        "id": "T006",
+        "title": "pebbles",
+        "category": "Network",
+        "priority": "high",
+        "status": "open"
+    },
+    {
+        "id": "T007",
+        "title": "Internet down",
+        "category": "Network",
+        "urgency": "high",
+        "affected_users": 12,
+        "priority": "critical",
+        "status": "open"
+    },
+    {
+        "id": "T008",
+        "title": "Mouse issue",
+        "category": "Hardware",
+        "urgency": "low",
+        "affected_users": 1,
+        "priority": "low",
+        "status": "open"
+    },
+    {
+        "id": "T009",
+        "title": "Printer issue",
+        "category": "Hardware",
+        "urgency": "medium",
+        "affected_users": 1,
+        "priority": "medium",
+        "status": "open"
     }
 ]

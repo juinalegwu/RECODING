@@ -1,3 +1,4 @@
+ 
 import json
 
 
@@ -8,7 +9,7 @@ def find_ticket(tickets, ticket_id):
 
     return None
 
- 
+
 def show_tickets(tickets):
     if not tickets:
         print("No tickets found.")
@@ -18,10 +19,11 @@ def show_tickets(tickets):
         print("ID:", ticket["id"])
         print("Title:", ticket["title"])
         print("Category:", ticket.get("category", "Not set"))
+        print("Urgency:", ticket.get("urgency", "Not set"))
+        print("Affected users:", ticket.get("affected_users", "Not set"))
         print("Priority:", ticket.get("priority", "Not set"))
         print("Status:", ticket["status"])
         print("-------------------")
- 
 
 
 def update_status(tickets, ticket_id, new_status):
@@ -53,24 +55,43 @@ def update_status(tickets, ticket_id, new_status):
     return False
 
 
- 
- 
-def create_ticket(tickets, title, category, priority):
+def calculate_priority(urgency, affected_users):
+    urgency = urgency.strip().lower()
+
+    if urgency == "high" and affected_users >= 10:
+        return "critical"
+
+    elif urgency == "high" or affected_users >= 10:
+        return "high"
+
+    elif urgency == "medium" or affected_users >= 3:
+        return "medium"
+
+    else:
+        return "low"
+
+
+def create_ticket(tickets, title, category, urgency, affected_users):
     title = title.strip()
     category = category.strip().title()
-    priority = priority.strip().lower()
+    urgency = urgency.strip().lower()
 
     allowed_categories = ["Network", "Hardware", "Software", "Other"]
-    allowed_priorities = ["high", "medium", "low"]
+    allowed_urgencies = ["low", "medium", "high"]
 
-    if not title:
+    if not title or category not in allowed_categories:
         return None
 
-    if category not in allowed_categories:
+    if urgency not in allowed_urgencies:
         return None
 
-    if priority not in allowed_priorities:
+    if isinstance(affected_users, bool) or not isinstance(affected_users, int):
         return None
+
+    if affected_users <= 0:
+        return None
+
+    priority = calculate_priority(urgency, affected_users)
 
     highest_number = 0
 
@@ -79,9 +100,7 @@ def create_ticket(tickets, title, category, priority):
 
         if ticket_id.startswith("T") and ticket_id[1:].isdigit():
             number = int(ticket_id[1:])
-
-            if number > highest_number:
-                highest_number = number
+            highest_number = max(highest_number, number)
 
     new_id = f"T{highest_number + 1:03d}"
 
@@ -89,15 +108,14 @@ def create_ticket(tickets, title, category, priority):
         "id": new_id,
         "title": title,
         "category": category,
+        "urgency": urgency,
+        "affected_users": affected_users,
         "priority": priority,
         "status": "open"
     }
 
     tickets.append(ticket)
-
     return ticket
- 
- 
 
 
 # Load tickets from the JSON file.
@@ -127,6 +145,8 @@ while True:
             print("Title:", result["title"])
             print("Status:", result["status"])
             print("Category:", result.get("category", "Not set"))
+            print("Urgency:", result.get("urgency", "Not set"))
+            print("Affected users:", result.get("affected_users", "Not set"))
             print("Priority:", result.get("priority", "Not set"))
         else:
             print("Ticket not found.")
@@ -156,10 +176,22 @@ while True:
 
     elif choice == "4":
         title = input("Enter ticket title: ")
-        category = input("Enter category (Network, Hardware, Software, Other): ")
-        priority = input("Enter priority (high, medium, low): ")
+        category = input(
+            "Enter category (Network, Hardware, Software, Other): "
+        )
+        urgency = input("Enter urgency (low, medium, high): ")
 
-        ticket = create_ticket(tickets, title, category, priority)
+        try:
+            affected_users = int(
+                input("How many users are affected? ")
+            )
+        except ValueError:
+            print("Please enter a whole number.")
+            continue
+
+        ticket = create_ticket(
+            tickets, title, category, urgency, affected_users
+        )
 
         if ticket is not None:
             with open("tickets.json", "w") as file:
@@ -167,13 +199,12 @@ while True:
 
             print("Ticket created successfully!")
             print("Ticket ID:", ticket["id"])
+            print("Priority:", ticket["priority"])
         else:
-            print("Invalid title, category, or priority. Please try again.")
-     
+            print(
+                "Invalid title, category, urgency, or number of users."
+            )
+
     elif choice == "5":
         print("Goodbye!")
         break
-
-    else:
-        print("Invalid option. Choose 1, 2, 3, 4, or 5.")
-       
