@@ -8,5 +8,10 @@
         "id": "T002",
         "title": "Broken keyboard",
         "status": "resolved"
+    },
+    {
+        "id": "T003",
+        "title": "printer problem",
+        "status": "open"
     }
 ]
