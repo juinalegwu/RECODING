@@ -1,5 +1,5 @@
- 
 import json
+from gemini_helper import suggest_solution
 
 
 def find_ticket(tickets, ticket_id):
@@ -129,7 +129,8 @@ while True:
     print("2. Find a ticket")
     print("3. Update ticket status")
     print("4. Create a new ticket")
-    print("5. Exit")
+    print("5. AI Troubleshooting Suggestions")
+    print("6. Exit")
 
     choice = input("Choose an option: ").strip()
 
@@ -206,5 +207,22 @@ while True:
             )
 
     elif choice == "5":
+        ticket_id = input(
+            "Enter ticket ID for AI troubleshooting: "
+        ).strip()
+
+        ticket = find_ticket(tickets, ticket_id)
+
+        if ticket is None:
+            print("Ticket not found.")
+        else:
+            suggestions = suggest_solution(ticket)
+            print("\n===== AI TROUBLESHOOTING SUGGESTIONS =====")
+            print(suggestions)
+
+    elif choice == "6":
         print("Goodbye!")
         break
+
+    else:
+        print("Invalid choice. Please select an option from 1 to 6.")

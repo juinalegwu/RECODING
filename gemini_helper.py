@@ -1,9 +1,10 @@
  
 import os
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-
+load_dotenv()
 def suggest_solution(ticket):
     api_key = os.getenv("GEMINI_API_KEY")
 
@@ -34,15 +35,13 @@ def suggest_solution(ticket):
             model="gemini-3.5-flash",
             contents=prompt,
             config=types.GenerateContentConfig(
-                max_output_tokens=300,
+                max_output_tokens=600,
                 thinking_config=types.ThinkingConfig(
                     thinking_level="low"
                 )
             )
         )
 
-        return response.text or "Gemini returned no suggestions."
-
+        return response.text if response.text else "Gemini returned no suggestions."
     except Exception as error:
         return f"Could not get suggestions from Gemini: {error}"
- 
